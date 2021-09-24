@@ -7,7 +7,16 @@ namespace Platformer
     {
         private string textureName;
         protected Sprite sprite;
-        public bool isDead;
+        public bool IsDead;
+
+        public enum states
+        {
+            ToBeSpawned,
+            Dead,
+            ToBeDespawned
+        }
+        public states State;
+        public virtual bool Solid => false;
 
         protected Entity(string textureName)
         {
