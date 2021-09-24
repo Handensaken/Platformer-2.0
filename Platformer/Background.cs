@@ -12,7 +12,6 @@ namespace Platformer
         }
         public override void Render(RenderTarget target)
         {
-
             View view = target.GetView();
             Vector2f topLeft = view.Center - 0.5f * view.Size;
             int tilesX = (int)MathF.Ceiling(view.Size.X / 24);

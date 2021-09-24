@@ -16,7 +16,7 @@ namespace Platformer
         }
         public Vector2f Position
         {
-            get { return this.Position; }
+            get { return sprite.Position; }
             set
             {
                 sprite.Position = value;
