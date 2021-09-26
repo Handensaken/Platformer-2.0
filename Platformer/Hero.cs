@@ -14,8 +14,10 @@ namespace Platformer
         private bool isGrounded;
         private bool isUpPressed;
         private bool facingRight = false;
-        public Hero() : base("characters")
+        private Window win;
+        public Hero(Window passingWin) : base("characters")
         {
+            win = passingWin;
             sprite.TextureRect = new IntRect(0, 0, 24, 24);
             sprite.Origin = new Vector2f(12, 12);
         }
@@ -54,6 +56,8 @@ namespace Platformer
                 }
                 verticalSpeed = 0.0f;
             }
+            //here i'm supposed to check if the hero is outside the screen but I can't find a way to get the bounds of the view
+            
 
         }
         public override void Render(RenderTarget target)
