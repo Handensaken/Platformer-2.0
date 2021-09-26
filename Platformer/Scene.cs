@@ -59,6 +59,7 @@ namespace Platformer
         public void Reload()
         {
             nextScene = currentScene;
+            HandleSceneChange();
         }
         public void Load(string loadString)
         {
@@ -121,6 +122,21 @@ namespace Platformer
                     }
             }
         }
+
+        public bool FindByType<T>(out T found) where T : Entity
+        {
+            found = default(T);
+            foreach (var entity in entities)
+            {
+                if (entity is T typed)
+                {
+                    found = typed;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void UpdateAll(float deltaTime)
         {
             HandleSceneChange();

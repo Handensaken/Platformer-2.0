@@ -33,7 +33,6 @@ namespace Platformer
                 scene.TryMove(this, new Vector2f(100 * deltaTime, 0));
                 facingRight = true;
             }
-
             if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
             {
                 if (isGrounded && !isUpPressed)
@@ -42,8 +41,9 @@ namespace Platformer
                     isUpPressed = true;
                 }
                 else isUpPressed = false;
-
             }
+
+
             verticalSpeed += GravityForce * deltaTime;
             if (verticalSpeed > 500.0f) verticalSpeed = 500.0f;
             isGrounded = false;
@@ -57,8 +57,11 @@ namespace Platformer
                 verticalSpeed = 0.0f;
             }
             //here i'm supposed to check if the hero is outside the screen but I can't find a way to get the bounds of the view
-            
-
+            System.Console.WriteLine(sprite.Position);
+            if (sprite.Position.X > 400 || sprite.Position.X < 0 || sprite.Position.Y > 300 || sprite.Position.Y < 0)
+            {
+                scene.Reload();
+            }
         }
         public override void Render(RenderTarget target)
         {

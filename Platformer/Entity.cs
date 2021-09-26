@@ -42,6 +42,7 @@ namespace Platformer
         }
         public virtual void Render(RenderTarget target)
         {
+            if (IsDead) return;
             target.Draw(sprite);
         }
     }
