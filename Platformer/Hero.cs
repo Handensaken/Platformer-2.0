@@ -15,23 +15,47 @@ namespace Platformer
         private bool isUpPressed;
         private bool facingRight = false;
         private Window win;
+        IntRect[] textures = new IntRect[2];
+        private int indexTracker;
+
         public Hero(Window passingWin) : base("characters")
         {
             win = passingWin;
-            sprite.TextureRect = new IntRect(0, 0, 24, 24);
+            textures[0] = new IntRect(0, 0, 24, 24);
+            textures[1] = new IntRect(24, 0, 24, 24);
+            sprite.TextureRect = textures[1];
             sprite.Origin = new Vector2f(12, 12);
+            indexTracker = 0;
         }
+        public override FloatRect Bounds
+        {
+            get
+            {
+                var bounds = base.Bounds;
+                bounds.Left += 3;
+                bounds.Width -= 6;
+                bounds.Top += 3;
+                bounds.Height -= 3;
+                return bounds;
+            }
+        }
+        Clock clock = new Clock();
+        float timer;
         public override void Update(Scene scene, float deltaTime)
         {
+            timer += clock.Restart().AsSeconds(); ;
+            bool moving = false;
             if (Keyboard.IsKeyPressed(Keyboard.Key.Left))
             {
                 scene.TryMove(this, new Vector2f(-100 * deltaTime, 0));
                 facingRight = false;
+                moving = true;
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
                 scene.TryMove(this, new Vector2f(100 * deltaTime, 0));
                 facingRight = true;
+                moving = true;
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Up))
             {
@@ -53,11 +77,29 @@ namespace Platformer
                 if (verticalSpeed > 0.0f)
                 {
                     isGrounded = true;
+                    verticalSpeed = 0.0f;
                 }
-                verticalSpeed = 0.0f;
+                else
+                {
+                    verticalSpeed = 0.5f;
+                }
             }
-            //here i'm supposed to check if the hero is outside the screen but I can't find a way to get the bounds of the view
-            System.Console.WriteLine(sprite.Position);
+
+            if (moving && isGrounded)
+            {
+                if (timer >= 0.2f)
+                {
+                    sprite.TextureRect = textures[indexTracker];
+                    indexTracker++;
+                    if (indexTracker > textures.Length - 1) { indexTracker = 0; }
+                    timer = 0;
+                }
+            }
+            else
+            {
+                sprite.TextureRect = textures[0];
+            }
+
             if (sprite.Position.X > 400 || sprite.Position.X < 0 || sprite.Position.Y > 300 || sprite.Position.Y < 0)
             {
                 scene.Reload();
